@@ -80,6 +80,8 @@ public:
 	virtual int hdel(const Bytes &name, const Bytes &key, char log_type=BinlogType::SYNC);
 	// -1: error, 1: ok, 0: value is not an integer or out of range
 	virtual int hincr(const Bytes &name, const Bytes &key, int64_t by, int64_t *new_val, char log_type=BinlogType::SYNC);
+	virtual int hmax_or_min(const Bytes &name, const Bytes &key, int64_t new_val,
+						  int64_t *ret_val, bool is_max, char log_type=BinlogType::SYNC);
 	//int multi_hset(const Bytes &name, const std::vector<Bytes> &kvs, int offset=0, char log_type=BinlogType::SYNC);
 	//int multi_hdel(const Bytes &name, const std::vector<Bytes> &keys, int offset=0, char log_type=BinlogType::SYNC);
 

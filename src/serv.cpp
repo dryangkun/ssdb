@@ -43,6 +43,8 @@ DEF_PROC(hset);
 DEF_PROC(hdel);
 DEF_PROC(hincr);
 DEF_PROC(hdecr);
+DEF_PROC(hmax);
+DEF_PROC(hmin);
 DEF_PROC(hclear);
 DEF_PROC(hgetall);
 DEF_PROC(hscan);
@@ -167,6 +169,8 @@ void SSDBServer::reg_procs(NetworkServer *net){
 	REG_PROC(hdel, "wt");
 	REG_PROC(hincr, "wt");
 	REG_PROC(hdecr, "wt");
+	REG_PROC(hmax, "wt");
+	REG_PROC(hmin, "wt");
 	REG_PROC(hclear, "wt");
 	REG_PROC(hgetall, "rt");
 	REG_PROC(hscan, "rt");

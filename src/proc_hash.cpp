@@ -296,4 +296,28 @@ int proc_hdecr(NetworkServer *net, Link *link, const Request &req, Response *res
 	return _hincr(serv->ssdb, req, resp, -1);
 }
 
+static int _hmax_or_min(SSDB *ssdb, const Request &req, Response *resp, bool is_max) {
+	CHECK_NUM_PARAMS(4);
+
+	int64_t new_val = req[3].Int64();
+	int64_t ret_val;
+	int ret = ssdb->hmax_or_min(req[1], req[2], new_val, &ret_val, is_max);
+	if(ret == 0){
+		resp->reply_status(-1, "value is not an integer or out of range");
+	}else{
+		resp->reply_int(ret, ret_val);
+	}
+	return 0;
+}
+
+int proc_hmax(NetworkServer *net, Link *link, const Request &req, Response *resp){
+	SSDBServer *serv = (SSDBServer *)net->data;
+	return _hmax_or_min(serv->ssdb, req, resp, true);
+}
+
+int proc_hmin(NetworkServer *net, Link *link, const Request &req, Response *resp){
+	SSDBServer *serv = (SSDBServer *)net->data;
+	return _hmax_or_min(serv->ssdb, req, resp, false);
+}
+
 

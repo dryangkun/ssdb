@@ -132,6 +132,8 @@ public:
 	virtual Status hset(const std::string &name, const std::string &key, const std::string &val) = 0;
 	virtual Status hdel(const std::string &name, const std::string &key) = 0;
 	virtual Status hincr(const std::string &name, const std::string &key, int64_t incrby, int64_t *ret) = 0;
+	virtual Status hmax(const std::string &name, const std::string &key, int64_t val, int64_t *ret) = 0;
+	virtual Status hmin(const std::string &name, const std::string &key, int64_t val, int64_t *ret) = 0;
 	virtual Status hsize(const std::string &name, int64_t *ret) = 0;
 	/**
 	 * Delete all of the keys in a hashmap, return the number of keys deleted.

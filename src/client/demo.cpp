@@ -135,7 +135,12 @@ int main(int argc, char **argv){
 		assert(s.ok() && (ret == 3));
 		s = client->hincr(hash, key, -1, &ret);
 		assert(s.ok() && (ret == 2));
-		
+
+		s = client->hmax(hash, key, 10, &ret);
+		assert(s.ok() && (ret == 10));
+		s = client->hmin(hash, key, 2, &ret);
+		assert(s.ok() && (ret == 2));
+
 		std::vector<std::string> list;
 		s = client->hkeys(hash, "", "", 2, &list);
 		assert(s.ok() && list.size() <= 2);

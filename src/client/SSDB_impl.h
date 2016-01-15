@@ -49,6 +49,8 @@ public:
 	virtual Status hset(const std::string &name, const std::string &key, const std::string &val);
 	virtual Status hdel(const std::string &name, const std::string &key);
 	virtual Status hincr(const std::string &name, const std::string &key, int64_t incrby, int64_t *ret);
+	virtual Status hmax(const std::string &name, const std::string &key, int64_t val, int64_t *ret);
+	virtual Status hmin(const std::string &name, const std::string &key, int64_t val, int64_t *ret);
 	virtual Status hsize(const std::string &name, int64_t *ret);
 	virtual Status hclear(const std::string &name, int64_t *ret=NULL);
 	virtual Status hkeys(const std::string &name, const std::string &key_start, const std::string &key_end,

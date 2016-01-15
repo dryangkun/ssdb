@@ -82,6 +82,45 @@ int SSDBImpl::hincr(const Bytes &name, const Bytes &key, int64_t by, int64_t *ne
 	return 1;
 }
 
+int SSDBImpl::hmax_or_min(const Bytes &name, const Bytes &key, int64_t new_val, int64_t *ret_val, bool is_max, char log_type){
+	Transaction trans(binlogs);
+
+	std::string old;
+	int ret = this->hget(name, key, &old);
+	if(ret == -1){
+		return -1;
+	}else if(ret == 0){
+		*ret_val = new_val;
+	}else{
+		int64_t old_val = str_to_int64(old);
+		if(errno != 0){
+			return 0;
+		}
+		if (is_max) {
+			*ret_val = old_val > new_val ? old_val : new_val;
+		} else {
+			*ret_val = old_val < new_val ? old_val : new_val;
+		}
+	}
+
+	ret = hset_one(this, name, key, str(*ret_val), log_type);
+	if(ret == -1){
+		return -1;
+	}
+	if(ret >= 0){
+		if(ret > 0){
+			if(incr_hsize(this, name, ret) == -1){
+				return -1;
+			}
+		}
+		leveldb::Status s = binlogs->commit();
+		if(!s.ok()){
+			return -1;
+		}
+	}
+	return 1;
+}
+
 int64_t SSDBImpl::hsize(const Bytes &name){
 	std::string size_key = encode_hsize_key(name);
 	std::string val;

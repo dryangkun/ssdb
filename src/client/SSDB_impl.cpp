@@ -309,6 +309,20 @@ Status ClientImpl::hincr(const std::string &name, const std::string &key, int64_
 	return _read_int64(resp, ret);
 }
 
+Status ClientImpl::hmax(const std::string &name, const std::string &key, int64_t val, int64_t *ret) {
+	std::string s_val = str(val);
+	const std::vector<std::string> *resp;
+	resp = this->request("hmax", name, key, s_val);
+	return _read_int64(resp, ret);
+}
+
+Status ClientImpl::hmin(const std::string &name, const std::string &key, int64_t val, int64_t *ret) {
+	std::string s_val = str(val);
+	const std::vector<std::string> *resp;
+	resp = this->request("hmin", name, key, s_val);
+	return _read_int64(resp, ret);
+}
+
 Status ClientImpl::hsize(const std::string &name, int64_t *ret){
 	const std::vector<std::string> *resp;
 	resp = this->request("hsize", name);
